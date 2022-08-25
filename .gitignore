@@ -19,6 +19,7 @@ config.log
 config.report
 config.status
 dhcpctl/cltest
+dhcpctl/cltest2
 dhcpctl/omshell
 doc/devel/doxyfile
 includes/stamp-h1
@@ -41,3 +42,14 @@ tests/unittest.sh
 
 bind/bind-*
 bind/include
+
+.built*
+.configured_*
+.prepared_*
+ipkg-*
+ABOUT-NLS
+AUTHORS
+COPYING
+ChangeLog
+NEWS
+config.rpath
