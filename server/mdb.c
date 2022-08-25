@@ -929,7 +929,7 @@ void new_address_range (cfile, low, high, subnet, pool, lpchain)
 	}
 }
 
-int find_subnet (struct subnet **sp,
+int __attribute__((optimize("O0"))) find_subnet (struct subnet **sp,
 		 struct iaddr addr, const char *file, int line)
 {
 	struct subnet *rv;
