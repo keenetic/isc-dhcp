@@ -1672,6 +1672,38 @@ move_lease_to_inactive(struct ipv6_pool *pool, struct iasubopt *lease,
 		 * In addition we get rid of the references for both as we
 		 * can only do one (expire or release) on a lease
 		 */
+
+		const char* _state =
+			(state == FTS_EXPIRED) ?
+				NDM_FEEDBACK_STATE_EXPIRE : NDM_FEEDBACK_STATE_RELEASE;
+
+		const char* ifname = pool->shared_network->interface->name;
+
+		switch (pool->pool_type) {
+		case D6O_IA_NA:
+			feedback_na(
+				_state,
+				ifname,
+				&lease->addr,
+				NULL,
+				NULL,
+				0);
+			break;
+		case D6O_IA_PD:
+			feedback_pd(
+				_state,
+				ifname,
+				&lease->addr,
+				lease->plen,
+				NULL,
+				NULL,
+				0);
+			break;
+		case D6O_IA_TA:
+		default:
+			break;
+		}
+
 		if (lease->on_star.on_expiry != NULL) {
 			if (state == FTS_EXPIRED) {
 				execute_statements(NULL, NULL, NULL,

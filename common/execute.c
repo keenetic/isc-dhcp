@@ -32,6 +32,130 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#define NDM_FEEDBACK_SCRIPT			"/var/dhcp6s/script"
+#define NDM_FEEDBACK_TYPE_NA		"IA_NA"
+#define NDM_FEEDBACK_TYPE_PD		"IA_PD"
+
+static int __feedback(const char* const *argv)
+{
+	pid_t p;
+
+	if ((p = fork()) > 0) {
+		int status;
+		waitpid(p, &status, 0);
+
+		if (status) {
+			log_error("feedback: %s exit status %d", argv[0], status);
+
+			return status;
+		}
+	} else if (p == 0) {
+
+		execvp(argv[0], (char* const *)argv);
+
+		log_error("feedback: unable to execute %s: %m", argv[0]);
+		_exit(127);
+	} else {
+		log_error("feedback: fork() failed");
+
+		return -1;
+	}
+
+	return 0;
+}
+
+static int _feedback(
+		const char* type,
+		const char* state,
+		const char* iface,
+		const struct in6_addr* address,
+		const u_int8_t plen,
+		const struct iaddr* client_addr,
+		const struct data_string* client_id,
+		const u_int32_t valid)
+{
+	char pfx[INET6_ADDRSTRLEN + 4];
+	char cli_addr[INET6_ADDRSTRLEN];
+	char vld[11];
+
+	inet_ntop(AF_INET6, address, pfx, sizeof(pfx));
+
+	if( plen != 0 )
+	{
+		sprintf(pfx + strlen(pfx), "/%d", plen);
+	}
+
+	sprintf(vld, "%d", valid);
+
+	if (client_addr != NULL) {
+		inet_ntop(AF_INET6, client_addr->iabuf, cli_addr, sizeof(cli_addr));
+	} else {
+		cli_addr[0] = 0;
+	}
+
+	char duid[60];
+
+	if(client_id != NULL) {
+		snprintf(duid, sizeof(duid), "%s",
+				 print_hex_1(client_id->len, client_id->data, sizeof(duid)));
+	} else {
+		duid[0] = 0;
+	}
+
+	const char *const argv[] = {
+		NDM_FEEDBACK_SCRIPT,
+		type,
+		state,
+		pfx,
+		vld,
+		cli_addr,
+		duid,
+		iface,
+		NULL
+	};
+
+	return __feedback(argv);
+}
+
+int feedback_na(
+		const char* state,
+		const char* iface,
+		const struct in6_addr* address,
+		const struct iaddr* client_addr,
+		const struct data_string* client_id,
+		const u_int32_t valid)
+{
+	return _feedback(
+				NDM_FEEDBACK_TYPE_NA,
+				state,
+				iface,
+				address,
+				0,
+				client_addr,
+				client_id,
+				valid);
+}
+
+int feedback_pd(
+		const char* state,
+		const char* iface,
+		const struct in6_addr* prefix,
+		const u_int8_t plen,
+		const struct iaddr* client_addr,
+		const struct data_string* client_id,
+		const u_int32_t valid)
+{
+	return _feedback(
+				NDM_FEEDBACK_TYPE_PD,
+				state,
+				iface,
+				prefix,
+				plen,
+				client_addr,
+				client_id,
+				valid);
+}
+
 int execute_statements (result, packet, lease, client_state,
 			in_options, out_options, scope, statements,
 			on_star)

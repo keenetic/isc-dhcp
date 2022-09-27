@@ -2257,6 +2257,16 @@ reply_process_ia_na(struct reply_state *reply, struct option_cache *ia) {
 			executable_statement_dereference
 				(&reply->on_star.on_commit, MDL);
 		}
+
+		feedback_na(
+			reply->packet->dhcpv6_msg_type == DHCPV6_RENEW ?
+				NDM_FEEDBACK_STATE_RENEW : NDM_FEEDBACK_STATE_COMMIT, //static
+			reply->packet->interface->name,
+			(const struct in6_addr *)reply->fixed.data,
+			&reply->packet->client_addr,
+			&reply->client_id,
+			0);
+
 		goto cleanup;
 	}
 
@@ -2311,6 +2321,15 @@ reply_process_ia_na(struct reply_state *reply, struct option_cache *ia) {
 			}
 
 			ia_reference(&tmp->ia, reply->ia, MDL);
+
+			feedback_na(
+				reply->packet->dhcpv6_msg_type == DHCPV6_RENEW ?
+					NDM_FEEDBACK_STATE_RENEW : NDM_FEEDBACK_STATE_COMMIT,
+				reply->packet->interface->name,
+				(const struct in6_addr *)&tmp->addr,
+				&reply->packet->client_addr,
+				&reply->client_id,
+				tmp->valid);
 
 			/* If we have anything to do on commit do it now */
 			if (tmp->on_star.on_commit != NULL) {
@@ -4284,6 +4303,17 @@ reply_process_ia_pd(struct reply_state *reply, struct option_cache *ia) {
 			executable_statement_dereference
 				(&reply->on_star.on_commit, MDL);
 		}
+
+		feedback_pd(
+			reply->packet->dhcpv6_msg_type == DHCPV6_RENEW ?
+				NDM_FEEDBACK_STATE_RENEW : NDM_FEEDBACK_STATE_COMMIT, //static
+			reply->packet->interface->name,
+			(const struct in6_addr *)reply->fixed_pref.lo_addr.iabuf,
+			reply->fixed_pref.bits,
+			&reply->packet->client_addr,
+			&reply->client_id,
+			0);
+
 		goto cleanup;
 	}
 
@@ -4335,6 +4365,16 @@ reply_process_ia_pd(struct reply_state *reply, struct option_cache *ia) {
 			if (tmp->ia != NULL)
 				ia_dereference(&tmp->ia, MDL);
 			ia_reference(&tmp->ia, reply->ia, MDL);
+
+			feedback_pd(
+				reply->packet->dhcpv6_msg_type == DHCPV6_RENEW ?
+					NDM_FEEDBACK_STATE_RENEW : NDM_FEEDBACK_STATE_COMMIT,
+				reply->packet->interface->name,
+				(const struct in6_addr *)&tmp->addr,
+				tmp->plen,
+				&reply->packet->client_addr,
+				&reply->client_id,
+				tmp->valid);
 
 			/* If we have anything to do on commit do it now */
 			if (tmp->on_star.on_commit != NULL) {

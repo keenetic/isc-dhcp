@@ -3287,6 +3287,28 @@ int executable_statement_foreach (struct executable_statement *,
 				  int (*) (struct executable_statement *,
 					   void *, int), void *, int);
 
+#define NDM_FEEDBACK_STATE_COMMIT		"COMMIT"
+#define NDM_FEEDBACK_STATE_RENEW		"RENEW"
+#define NDM_FEEDBACK_STATE_EXPIRE		"EXPIRE"
+#define NDM_FEEDBACK_STATE_RELEASE		"RELEASE"
+
+int feedback_pd(
+		const char* state,
+		const char* iface,
+		const struct in6_addr* prefix,
+		const u_int8_t plen,
+		const struct iaddr* client_addr,
+		const struct data_string* client_id,
+		const u_int32_t valid);
+
+int feedback_na(
+		const char* state,
+		const char* iface,
+		const struct in6_addr* address,
+		const struct iaddr* client_addr,
+		const struct data_string* client_id,
+		const u_int32_t valid);
+
 /* comapi.c */
 extern omapi_object_type_t *dhcp_type_group;
 extern omapi_object_type_t *dhcp_type_shared_network;
