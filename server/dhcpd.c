@@ -26,12 +26,14 @@
  *
  */
 
+#if 0
 static const char copyright[] =
 "Copyright 2004-2022 Internet Systems Consortium.";
 static const char arr [] = "All rights reserved.";
-static const char message [] = "Internet Systems Consortium DHCP Server";
 static const char url [] =
 "For info, please visit https://www.isc.org/software/dhcp/";
+#endif
+static const char message [] = "ISC DHCP Server";
 
 #include "dhcpd.h"
 #include <omapip/omapip_p.h>
@@ -207,9 +209,11 @@ static char use_noarg[] = "No argument for command: %s ";
 static void
 usage(const char *sfmt, const char *sarg) {
 	log_info("%s %s", message, PACKAGE_VERSION);
+#if 0
 	log_info(copyright);
 	log_info(arr);
 	log_info(url);
+#endif
 
 	/* If desired print out the specific error message */
 #ifdef PRINT_SPECIFIC_CL_ERRORS
@@ -612,9 +616,11 @@ main(int argc, char **argv) {
 
 	if (!quiet) {
 		log_info("%s %s", message, PACKAGE_VERSION);
+#if 0
 		log_info (copyright);
 		log_info (arr);
 		log_info (url);
+#endif
 	} else {
 		log_perror = 0;
 	}
@@ -1333,9 +1339,11 @@ void postconf_initialization (int quiet)
 				tmp = log_perror;
 				log_perror = 0;
 				log_info("%s %s", message, PACKAGE_VERSION);
+#if 0
 				log_info(copyright);
 				log_info(arr);
 				log_info(url);
+#endif
 				log_perror = tmp;
 			} else
 				log_fatal("invalid log facility");
