@@ -120,6 +120,7 @@ void assemble_hw_header (interface, buf, bufix, to)
 		log_error("Attempt to assemble hw header for infiniband");
 		break;
 	case HTYPE_PUREIP:
+	case HTYPE_TUNNEL:
 		/* Nothing to do, there is no hw header */
 		*bufix = 0;
 		break;
@@ -224,6 +225,7 @@ ssize_t decode_hw_header (interface, buf, bufix, from)
 		log_error("Attempt to decode hw header for infiniband");
 		return (0);
 	case HTYPE_PUREIP:
+	case HTYPE_TUNNEL:
 		/* Nothing to do, there is no hw header */
 		return 0;
 	case HTYPE_ETHER:

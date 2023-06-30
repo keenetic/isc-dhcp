@@ -255,7 +255,9 @@ void if_deregister_receive (info)
 static void lpf_gen_filter_setup (info)
 	struct interface_info *info;
 {
-	int pure_ip = info -> hw_address.hbuf [0] == HTYPE_PUREIP;
+	int pure_ip =
+		info -> hw_address.hbuf [0] == HTYPE_PUREIP ||
+		info -> hw_address.hbuf [0] == HTYPE_TUNNEL;
 	struct sock_fprog p;
 
 	memset(&p, 0, sizeof(p));
@@ -594,6 +596,12 @@ get_hw_addr(const char *name, struct hardware *hw) {
 		case ARPHRD_RAWIP:
 			hw->hlen = 1;
 			hw->hbuf[0] = HTYPE_PUREIP;
+			break;
+#endif
+#ifdef ARPHRD_NONE
+		case ARPHRD_NONE:
+			hw->hlen = 1;
+			hw->hbuf[0] = HTYPE_TUNNEL;
 			break;
 #endif
 		default:

@@ -80,6 +80,9 @@ struct dhcp_packet {
 #define HTYPE_IPMP       255            /* IPMP - random hw address - there
 					 * is no standard for this so we
 					 * just steal a type            */
+#define HTYPE_TUNNEL     254            /* TUNNEL - no hw address - there
+					 * is no standard for this so we
+					 * just steal a type            */
 
 /* Magic cookie validating dhcp options field (and bootp vendor
    extensions field). */
