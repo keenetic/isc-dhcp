@@ -2441,7 +2441,7 @@ write_leases6(void) {
 		return 0;
 	}
 
-	log_info("Wrote %d NA, %d TA, %d PD leases to lease file.",
+	log_debug("Wrote %d NA, %d TA, %d PD leases to lease file.",
 		 nas, tas, pds);
 	return 1;
 }

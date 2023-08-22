@@ -1602,7 +1602,7 @@ int dhcpd_interface_setup_hook (struct interface_info *ip, struct iaddr *ia)
 			interface_reference (&subnet -> interface, ip, MDL);
 			subnet -> interface_address = *ia;
 		} else if (subnet -> interface != ip) {
-			log_error ("Multiple interfaces match the %s: %s %s",
+			log_debug ("Multiple interfaces match the %s: %s %s",
 				   "same subnet",
 				   subnet -> interface -> name, ip -> name);
 		}
@@ -1620,7 +1620,7 @@ int dhcpd_interface_setup_hook (struct interface_info *ip, struct iaddr *ia)
 		if (!share -> interface) {
 			interface_reference (&share -> interface, ip, MDL);
 		} else if (share -> interface != ip) {
-			log_error ("Multiple interfaces match the %s: %s %s",
+			log_debug ("Multiple interfaces match the %s: %s %s",
 				   "same shared network",
 				   share -> interface -> name, ip -> name);
 		}

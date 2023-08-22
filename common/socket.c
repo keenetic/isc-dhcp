@@ -538,11 +538,11 @@ if_register6(struct interface_info *info, int do_multicast) {
 				log_fatal("inet_ntop: unable to convert "
 					  "local-address6");
 			}
-			log_info("Bound to [%s]:%d",
+			log_debug("Bound to [%s]:%d",
 				 addr6_str,
 				 (int) ntohs(local_port));
 		} else {
-			log_info("Bound to *:%d", (int) ntohs(local_port));
+			log_debug("Bound to *:%d", (int) ntohs(local_port));
 		}
 	}
 
