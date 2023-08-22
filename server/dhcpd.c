@@ -499,6 +499,7 @@ main(int argc, char **argv) {
 		} else if (!strcmp (argv [i], "-q")) {
 			quiet = 1;
 			quiet_interface_discovery = 1;
+			setlogmask(LOG_UPTO(LOG_INFO));
 #ifdef DHCPv6
 		} else if (!strcmp(argv[i], "-4")) {
 			if (local_family_set && (local_family != AF_INET)) {
