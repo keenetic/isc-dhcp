@@ -1062,7 +1062,7 @@ main(int argc, char **argv) {
 #endif
 
 	/* Log that we are about to start working */
-	log_info("Server starting service.");
+	log_debug("Server starting service.");
 
 	/*
 	 * Receive packets and dispatch them...

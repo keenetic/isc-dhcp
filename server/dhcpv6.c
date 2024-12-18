@@ -7771,10 +7771,15 @@ dhcpv6(struct packet *packet) {
 	struct sockaddr_in6 to_addr;
 	int send_ret;
 
+	int stateless =
+		packet->dhcpv6_msg_type == DHCPV6_INFORMATION_REQUEST;
+
 	/*
 	 * Log a message that we received this packet.
 	 */
-	log_packet_in(packet);
+
+	if (!stateless)
+		log_packet_in(packet);
 
 	/*
 	 * Build our reply packet.
@@ -7817,10 +7822,11 @@ dhcpv6(struct packet *packet) {
 		memcpy(&to_addr.sin6_addr, packet->client_addr.iabuf,
 		       sizeof(to_addr.sin6_addr));
 
-		log_info("Sending %s to %s port %d",
-			 dhcpv6_type_names[reply.data[0]],
-			 piaddr(packet->client_addr),
-			 ntohs(to_addr.sin6_port));
+		if (!stateless)
+			log_info("Sending %s to %s port %d",
+				 dhcpv6_type_names[reply.data[0]],
+				 piaddr(packet->client_addr),
+				 ntohs(to_addr.sin6_port));
 
 		send_ret = send_packet6(packet->interface,
 					reply.data, reply.len, &to_addr);
