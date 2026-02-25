@@ -7696,6 +7696,9 @@ build_dhcpv6_reply(struct data_string *reply, struct packet *packet) {
 		case DHCPV6_DHCPV4_RESPONSE:
 			dhcpv6_discard(packet);
 			break;
+		case DHCPV6_ADDR_REG_INFORM:
+			dhcpv6_discard(packet);
+			break;
 		default:
 			/* XXX: would be nice if we had "notice" level,
 				as syslog, for this */
