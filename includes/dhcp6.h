@@ -158,6 +158,7 @@
 #define DHCPV6_RECONFIGURE_REPLY   19	/* RFC6977 */
 #define DHCPV6_DHCPV4_QUERY	   20	/* RFC7341 */
 #define DHCPV6_DHCPV4_RESPONSE	   21	/* RFC7341 */
+#define DHCPV6_ADDR_REG_INFORM     36	/* RFC 9686 */
 
 extern const char *dhcpv6_type_names[];
 extern const int dhcpv6_type_name_max;
