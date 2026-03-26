@@ -658,6 +658,7 @@ struct enumeration_value dhcpv6_message_values[] = {
 	{ "RECONFIGURE-REPLY", 19 },
 	{ "DHCPV4-QUERY", 20 },
 	{ "DHCPV4-RESPONSE", 21 },
+	{ "ADDR-REG-INFORM", 36 },
 	{ NULL, 0 }
 };
 
@@ -684,7 +685,22 @@ const char *dhcpv6_type_names[] = {
 	"Reconfigure-request",
 	"Reconfigure-reply",
 	"Dhcpv4-query",
-	"Dhcpv4-response"
+	"Dhcpv4-response",
+	"", /* 22 */
+	"", /* 23 */
+	"", /* 24 */
+	"", /* 25 */
+	"", /* 26 */
+	"", /* 27 */
+	"", /* 28 */
+	"", /* 29 */
+	"", /* 30 */
+	"", /* 31 */
+	"", /* 32 */
+	"", /* 33 */
+	"", /* 34 */
+	"", /* 35 */
+	"Addr-reg-inform" /* 36 */
 };
 const int dhcpv6_type_name_max =
 	(sizeof(dhcpv6_type_names) / sizeof(dhcpv6_type_names[0]));

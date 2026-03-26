@@ -7717,6 +7717,9 @@ log_packet_in(const struct packet *packet) {
 
 	memset(&s, 0, sizeof(s));
 
+	if (packet->dhcpv6_msg_type == DHCPV6_ADDR_REG_INFORM)
+		return;
+
 	if (packet->dhcpv6_msg_type < dhcpv6_type_name_max) {
 		data_string_sprintfa(&s, "%s message from %s port %d",
 				     dhcpv6_type_names[packet->dhcpv6_msg_type],
